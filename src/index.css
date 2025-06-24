@@ -1,0 +1,13 @@
+:root {
+  background-color: #e3d8ae;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.form-crud {
+  max-width: 450px;
+  padding: 15px;
+}
+
+.form-crud .form-floating:focus-within {
+  z-index: 2;
+}

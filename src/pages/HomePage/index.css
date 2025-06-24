@@ -1,0 +1,38 @@
+html {
+    overflow-x: hidden;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.button-aval {
+    display: flex;
+    width: 10rem;
+    height: 4rem;
+    background-color: #886c3f;
+    font-weight: bold;
+    font-size: x-large;
+    color: white;
+    border-radius: 8px;
+    justify-self: center;
+    justify-content: center;
+    padding-top: 1rem;
+    margin-top: -1rem;
+}
+
+.divisor {
+    width: 50rem;
+    height: 1px;
+    border: 1px solid #904900;
+    border-style: dashed;
+    justify-self: center;
+}
+
+.card-buttons {
+    width: 15rem;
+    height: 11rem;
+    background-color: #ba9c70 !important;
+    border-radius: 8px;
+}
