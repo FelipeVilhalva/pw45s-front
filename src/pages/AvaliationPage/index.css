@@ -1,0 +1,20 @@
+.text-fields {
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    max-width: auto;
+    height: auto;
+    padding: 10px;
+    resize: none;
+}
+
+.text-infos {
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    max-width: auto;
+    height: auto;
+    padding: 10px;
+}
