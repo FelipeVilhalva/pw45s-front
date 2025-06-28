@@ -2,8 +2,15 @@ import "./index.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCamera, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export function AvaliationPage() {
+    const [isSelected1, setIsSelected1] = useState(false);
+    const [isSelected2, setIsSelected2] = useState(false);
+    const [isSelected3, setIsSelected3] = useState(false);
+    const [isSelected4, setIsSelected4] = useState(false);
+    const [isSelected5, setIsSelected5] = useState(false);
+
   return (
     <div>
       <div className="container">
@@ -12,11 +19,9 @@ export function AvaliationPage() {
           <div className="justify-content-center col-9 col-md-9">
             <div className="justify-content-center" style={{position: 'absolute', width: '80vw'}}>
               <div className="d-flex justify-content-center">
-                <h5 className="p-2" style={{background: 'white', borderRadius: '10px'}}> Amostra </h5>
-              </div>
-
-              <div className="d-flex justify-content-center">
-                <p> Editar </p>
+                <h5 >  </h5>
+                <textarea className="p-2 text-name text-center" style={{background: 'white', borderRadius: '10px'}}
+                  placeholder="Amostra" maxLength={100} />
               </div>
             </div>
           </div>
@@ -45,30 +50,27 @@ export function AvaliationPage() {
 
           <div className="d-flex justify-content-center mt-2">
             <div className="d-flex justify-content-center col-12 col-md-8 mb-3">
-              <div className="d-flex rounded-circle justify-content-center mx-2"
-                style={{backgroundColor: '#ba9c70', width: '4rem', height: '4rem', border: '1px solid #873a00'}}>
-                <h3 style={{color: '#e2daae', alignSelf: 'center'}}> 1 </h3>
-              </div>
+              
+              <button onClick={() => setIsSelected1(!isSelected1)}
+                className={`d-flex rounded-circle justify-content-center mx-2
+                  ${isSelected1 ? "selected-button-layers" : "button-layers"}`}> 1 </button>
+              
             
-              <div className="d-flex rounded-circle justify-content-center mx-2"
-                style={{backgroundColor: '#ba9c70', width: '4rem', height: '4rem', border: '1px solid #873a00'}}>
-                <h3 style={{color: '#e2daae', alignSelf: 'center'}}> 2 </h3>
-              </div>
+              <button onClick={() => setIsSelected2(!isSelected2)}
+                className={`d-flex rounded-circle justify-content-center mx-2
+                  ${isSelected2 ? "selected-button-layers" : "button-layers"}`}> 2 </button>
 
-              <div className="d-flex rounded-circle justify-content-center mx-2"
-                style={{backgroundColor: '#ba9c70', width: '4rem', height: '4rem', border: '1px solid #873a00'}}>
-                <h3 style={{color: '#e2daae', alignSelf: 'center'}}> 3 </h3>
-              </div>
+              <button onClick={() => setIsSelected3(!isSelected3)}
+                className={`d-flex rounded-circle justify-content-center mx-2
+                  ${isSelected3 ? "selected-button-layers" : "button-layers"}`}> 3 </button>
 
-              <div className="d-flex rounded-circle justify-content-center mx-2"
-                style={{backgroundColor: '#ba9c70', width: '4rem', height: '4rem', border: '1px solid #873a00'}}>
-                <h3 style={{color: '#e2daae', alignSelf: 'center'}}> 4 </h3>
-              </div>
+              <button onClick={() => setIsSelected4(!isSelected4)}
+                className={`d-flex rounded-circle justify-content-center mx-2
+                  ${isSelected4 ? "selected-button-layers" : "button-layers"}`}> 4 </button>
 
-              <div className="d-flex rounded-circle justify-content-center mx-2"
-                style={{backgroundColor: '#ba9c70', width: '4rem', height: '4rem', border: '1px solid #873a00'}}>
-                <h3 style={{color: '#e2daae', alignSelf: 'center'}}> 5 </h3>
-              </div>
+              <button onClick={() => setIsSelected5(!isSelected5)}
+                className={`d-flex rounded-circle justify-content-center mx-2
+                  ${isSelected5 ? "selected-button-layers" : "button-layers"}`}> 5 </button>
             </div>
           </div>
         </div>
@@ -77,24 +79,84 @@ export function AvaliationPage() {
         <div className="justify-content-center">
           <div className="row mt-3">
             <h5> Local/propriedade (GPS): </h5>
-            <textarea maxLength={100} className="text-fields text-center" />
+            <textarea maxLength={100} className="text-fields" />
           </div>
 
           <div className="row mt-3">
             <h5> Avaliador: </h5>
-            <textarea maxLength={100} className="text-fields text-center" />
+            <textarea maxLength={100} className="text-fields" />
           </div>
 
-          {/*VAI TER QUE FAZER UM COMPONENTE PRA ISSO AQUI*/}
-          <div className="row mt-3">
-            <h5> Comprimento camada 1: </h5>
-            <textarea maxLength={100} className="text-fields text-center" />
-          </div>
+          {/*Campos que carregam com os botões*/}
+          {isSelected1 && (
+              <>
+                <div className="row mt-3">
+                  <h5> Comprimento camada 1: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
 
-          <div className="row mt-3">
-            <h5> Nota camada 1: </h5>
-            <textarea maxLength={100} className="text-fields text-center" />
-          </div>
+                <div className="row mt-3">
+                  <h5> Nota camada 1: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
+              </>
+          )}
+
+          {isSelected2 && (
+              <>
+                <div className="row mt-3">
+                  <h5> Comprimento camada 2: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
+
+                <div className="row mt-3">
+                  <h5> Nota camada 2: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
+              </>
+          )}
+
+          {isSelected3 && (
+              <>
+                <div className="row mt-3">
+                  <h5> Comprimento camada 3: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
+
+                <div className="row mt-3">
+                  <h5> Nota camada 3: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
+              </>
+          )}
+
+          {isSelected4 && (
+              <>
+                <div className="row mt-3">
+                  <h5> Comprimento camada 4: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
+
+                <div className="row mt-3">
+                  <h5> Nota camada 4: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
+              </>
+          )}
+
+          {isSelected5 && (
+              <>
+                <div className="row mt-3">
+                  <h5> Comprimento camada 5: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
+
+                <div className="row mt-3">
+                  <h5> Nota camada 5: </h5>
+                  <textarea maxLength={100} className="text-fields" />
+                </div>
+              </>
+          )}
         </div>
 
         {/*Imagens*/}
@@ -108,13 +170,13 @@ export function AvaliationPage() {
         <div className="d-flex justify-content-center mt-4 mb-4">
           <div className="row mt-3">
             <h5> Outras informações importantes: </h5>
-            <textarea className="text-infos text-center" />
+            <textarea className="text-infos" />
           </div>
         </div>
 
-        <div className="d-flex justify-content-center">
-            <Link to={"/avaliation"} className="button-aval"> AVALIAR </Link>
-          </div>
+        <div className="d-flex justify-content-center mt-5">
+          <Link to={"/avaliationConfirm"} className="button-aval"> AVALIAR </Link>
+        </div>
       </div>
     </div>
   );

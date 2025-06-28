@@ -1,3 +1,17 @@
+.text-name {
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    width: 15rem;
+    height: 2rem;
+    padding: 10px;
+    resize: none;
+    overflow: hidden;
+    color: black !important;
+}
+
 .text-fields {
     background-color: white;
     border: none;
@@ -7,6 +21,9 @@
     height: auto;
     padding: 10px;
     resize: none;
+    text-align: left;
+    align-items: start;
+    justify-content: start;
 }
 
 .text-infos {
@@ -17,4 +34,29 @@
     max-width: auto;
     height: auto;
     padding: 10px;
+    text-align: left;
+}
+
+.button-layers {
+    background-color: #ba9c70;
+    width: 4rem; 
+    height: 4rem;
+    border: 1px solid #873a00;
+    color: #e2daae;
+    font-size: x-large;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+}
+
+.selected-button-layers {
+    background-color: #58390b;
+    width: 4rem; 
+    height: 4rem;
+    border: 1px solid #75543a;
+    color: #cebc59;
+    font-size: x-large;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
 }
