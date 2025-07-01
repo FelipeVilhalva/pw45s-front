@@ -10,8 +10,8 @@ import {
   Select,
   Button,
 } from "@chakra-ui/react";
-import CategoryService from "@/service/CategoryService";
-import ProductService from "@/service/ProductService";
+import CategoryService from "@/service/CamadaService";
+import ProductService from "@/service/AvaliacaoService";
 import { ICategory, IProduct } from "@/commons/interfaces";
 
 export function ProductFormPageV2() {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IProduct } from "@/commons/interfaces";
-import ProductService from "@/service/ProductService";
+import ProductService from "@/service/AvaliacaoService";
 import { Link, useNavigate } from "react-router-dom";
 import {
   BsPencilSquare,

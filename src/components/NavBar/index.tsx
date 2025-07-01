@@ -1,7 +1,7 @@
 import "./index.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "@/assets/utfpr-logo.png";
-import AuthService from "@/service/AuthService";
+import AuthService from "@/service/ConfiguracaoService";
 
 export function NavBar() {
   const navigate = useNavigate();

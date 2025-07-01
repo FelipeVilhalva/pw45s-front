@@ -2,14 +2,23 @@ import "./index.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBolt, faCalendarDays, faComment, faGear, faInfo, faLightbulb, faMapLocationDot, faPersonDigging, faPiggyBank, faScrewdriverWrench, faSeedling, faShareNodes, faV } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
+import { IAvaliacao } from "@/commons/interfaces";  
+import { useState } from "react";
+import AvaliacaoService from "@/service/AvaliacaoService";
 
 export function HomePage() {
+  const [avaliacao] = useState<IAvaliacao>({configuracaoId: 1});
+
+  const criaAvaliacao = async() => {
+    const response = await AvaliacaoService.save(avaliacao);
+  }
+
   return (
     <div>
       <div className="container">
         <div>
           <div className="d-flex justify-content-center">
-            <Link to={"/avaliation"} className="button-aval"> AVALIAR </Link>
+            <Link to={"/avaliation"} className="button-aval" onClick={criaAvaliacao}> AVALIAR </Link>
           </div>
 
           <div className="divisor mt-5"></div>
@@ -26,26 +35,26 @@ export function HomePage() {
               </div>
 
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to={"/where"} className="card-buttons">
                   <FontAwesomeIcon icon={faMapLocationDot} size="4x" className="m-3" style={{color:'black'}} />
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> Onde amostrar </p>
-                </div>
+                </Link>
               </div>
             </div>
 
             <div className="row">
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to={"/when"} className="card-buttons">
                   <FontAwesomeIcon icon={faSeedling} size="4x" className="m-3" style={{color:'black'}} />
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> Quando amostrar </p>
-                </div>
+                </Link>
               </div>
 
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to={"/extraction"} className="card-buttons">
                   <FontAwesomeIcon icon={faPersonDigging} size="4x" className="m-3" style={{color:'black'}} />
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> Extração de amostra </p>
-                </div>
+                </Link>
               </div>
             </div>
 

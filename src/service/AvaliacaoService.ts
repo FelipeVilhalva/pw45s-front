@@ -1,12 +1,12 @@
-import { IProduct } from "@/commons/interfaces";
+import { IAvaliacao } from "@/commons/interfaces";
 import { api } from "@/lib/axios";
 
-const PRODUCT_URL = "/products";
+const AVALIACAO_URL = "/avaliacoes";
 
 const findAll = async (): Promise<any> => {
   let response;
   try {
-    response = await api.get(PRODUCT_URL);
+    response = await api.get(AVALIACAO_URL);
   } catch (error: any) {
     response = error.response;
   }
@@ -23,10 +23,10 @@ const remove = async (id: number): Promise<any> => {
   return response;
 };
 
-const save = async (product: IProduct): Promise<any> => {
+const save = async (avaliacao: IAvaliacao): Promise<any> => {
   let response;
   try {
-    response = await api.post(PRODUCT_URL, product);
+    response = await api.post(AVALIACAO_URL, avaliacao);
   } catch (error: any) {
     response = error.response;
   }

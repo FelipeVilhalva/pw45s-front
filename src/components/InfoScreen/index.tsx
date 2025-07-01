@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./index.css";
 import { ScreenProps } from "@/commons/interfaces";
 
-export const InfoScreen: React.FC<ScreenProps> = ({name, text, image}) => {
+export const InfoScreen: React.FC<ScreenProps> = ({name, text, image, before, after}) => {
   return (
     <div>
       <div className="container">
@@ -16,21 +16,25 @@ export const InfoScreen: React.FC<ScreenProps> = ({name, text, image}) => {
 
         <div className="divisor mt-5"></div>
 
-        <div>
-          <img src={image} alt={name} className="mt-5" />
-        </div>
+        {image != "" && (
+          <>
+            <div>
+              <img src={image} alt={name} className="mt-5" />
+            </div>
 
-        <div className="divisor mt-5"></div>
+            <div className="divisor mt-5"></div>
+          </>
+        )}
 
         <div className="d-flex justify-content-center">
           <div className="d-flex justify-content-center mt-5">
-            <Link to={"/avaliationConfirm"} className="button-aval"> VOLTAR </Link>
+            <Link to={before} className="button-aval"> VOLTAR </Link>
           </div>
 
           <div style={{width: '3rem'}}></div>
 
           <div className="d-flex justify-content-center mt-5">
-            <Link to={"/avaliationConfirm"} className="button-aval"> PRÓXIMO </Link>
+            <Link to={after} className="button-aval"> PRÓXIMO </Link>
           </div>
         </div>
       </div>
