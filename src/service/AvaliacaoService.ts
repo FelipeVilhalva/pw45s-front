@@ -16,7 +16,7 @@ const findAll = async (): Promise<any> => {
 const remove = async (id: number): Promise<any> => {
   let response;
   try {
-    response = await api.delete(`${PRODUCT_URL}/${id}`);
+    response = await api.delete(`${AVALIACAO_URL}/${id}`);
   } catch (error: any) {
     response = error.response;
   }
@@ -36,7 +36,7 @@ const save = async (avaliacao: IAvaliacao): Promise<any> => {
 const findById = async (id: number): Promise<any> => {
   let response;
   try {
-    response = await api.get(`${PRODUCT_URL}/${id}`);
+    response = await api.get(`${AVALIACAO_URL}/${id}`);
   } catch (error: any) {
     response = error.response;
   }

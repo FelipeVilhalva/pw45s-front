@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./index.css";
 
 export function AvaliationConfirmPage() {
@@ -64,7 +64,7 @@ export function AvaliationConfirmPage() {
         </div>
 
         <div className="d-flex justify-content-center mt-5">
-            <Link to={"/avaliationConfirm"} className="button-aval"> AVALIAR </Link>
+            <Link to={"/home"} className="button-aval"> AVALIAR </Link>
           </div>
       </div>
     </div>

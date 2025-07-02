@@ -16,7 +16,7 @@ export function NavBar() {
     <div className="background shadow-sm" style={{backgroundColor: "#ba9c70"}}>
       <div className="container">
         <nav className="navbar navbar-light navbar-expand justify-content-center">
-          <h1> VESS </h1>
+          <Link to={"/home"}> VESS </Link>
         </nav>
       </div>
     </div>

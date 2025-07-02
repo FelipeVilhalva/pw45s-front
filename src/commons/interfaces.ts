@@ -8,9 +8,9 @@ export interface ScreenProps {
 
 export interface IConfiguracao {
     nome: string;
-    descricao: string;
+    email: string;
     pais: string;
-    cidadeEstado: string;
+    endereco: string;
     idioma: string;
     dataCadastro: Date;
     dataAtualizacao: Date;

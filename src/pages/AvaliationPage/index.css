@@ -60,3 +60,16 @@
     justify-content: center;
     align-items: center;
 }
+
+.uploaded {
+    margin-bottom: 15rem;
+}
+
+.image-upload-card {
+    max-width: 25rem;
+    max-height: 25rem;
+    border-radius: 8px;
+    border: 10px solid grey;
+    border-radius: 10px;
+    justify-self: center;
+}

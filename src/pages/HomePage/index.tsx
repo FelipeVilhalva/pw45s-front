@@ -2,9 +2,9 @@ import "./index.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBolt, faCalendarDays, faComment, faGear, faInfo, faLightbulb, faMapLocationDot, faPersonDigging, faPiggyBank, faScrewdriverWrench, faSeedling, faShareNodes, faV } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
-import { IAvaliacao } from "@/commons/interfaces";  
-import { useState } from "react";
 import AvaliacaoService from "@/service/AvaliacaoService";
+import { useState } from "react";
+import { IAvaliacao } from "@/commons/interfaces";
 
 export function HomePage() {
   const [avaliacao] = useState<IAvaliacao>({configuracaoId: 1});
@@ -126,10 +126,10 @@ export function HomePage() {
               </div>
 
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to="/configuration" className="card-buttons">
                   <FontAwesomeIcon icon={faGear} size="4x" className="m-3" style={{color:'black'}} />
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> Configurações </p>
-                </div>
+                </Link>
               </div>
             </div>
           </div>

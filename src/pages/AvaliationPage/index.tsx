@@ -2,31 +2,69 @@ import "./index.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCamera, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { ChangeEvent, useEffect, useState } from "react";
-import { IAmostra, ICamada } from "@/commons/interfaces";
+import { ChangeEvent, SetStateAction, useRef, useState } from "react";
+import { IAmostra, IAvaliacao, ICamada } from "@/commons/interfaces";
 
 export function AvaliationPage() {
-  const [isSelected1, setIsSelected1] = useState(false);
-  const [isSelected2, setIsSelected2] = useState(false);
-  const [isSelected3, setIsSelected3] = useState(false);
-  const [isSelected4, setIsSelected4] = useState(false);
-  const [isSelected5, setIsSelected5] = useState(false);
-
-  const [form, setForm] = useState<IAmostra>({
-    username: "",
-    password: "",
-  });
-
-  const [form2, setForm2] = useState<ICamada>({
-    username: "",
-    password: "",
-  });
-
+  const [camadasSelecionadas, setCamadasSelecionadas] = useState(0);
   const navigate = useNavigate();
 
+  {/*Formulários*/}
+  const [avaliacao, setAvaliacao] = useState<IAvaliacao>({
+    configuracaoId: 1,
+    nome: "Amostra",
+    avaliador: "",
+    informacoes: "",
+    descricaoManejoLocal: "",
+    resumoAvaliacao: "",
+    dataCriacao: new Date(),
+    dataFim: new Date(),
+    escoreMedioGeral: 1,
+    totalAmostras: 1,
+    status: "",
+  });
+
+  const [amostra, setAmostra] = useState<IAmostra>({
+    avaliacaoId: 0,
+    nomeAmostra: "",
+    numeroCamadas: 0,
+    localizacao: "",
+    arquivo: "",
+    escoreQeVess: 0,
+    descricaoManejo: "",
+    resumo: "",
+    outrasInformacoes: "",
+    dataAvaliacao: new Date(),
+  });
+
+  const [camadas, setCamadas] = useState<ICamada[]>([
+    { amostraId: 0, numeroCamada: 1, comprimentoCm: 0, notaCamada: 0 },
+  ]);
+
+  {/*Função para selecionar nos botões do Vess*/}
+  const selecionarCamadas = (quantidade: number) => {
+    const novaQuantidade = quantidade === camadasSelecionadas ? quantidade - 1 : quantidade;
+    setCamadasSelecionadas(novaQuantidade);
+
+    setCamadas((prev) => {
+      const novasCamadas = [...prev];
+      while (novasCamadas.length < novaQuantidade) {
+        novasCamadas.push({
+          amostraId: 0,
+          numeroCamada: novasCamadas.length + 1,
+          comprimentoCm: 0,
+          notaCamada: 0,
+        });
+      }
+      return novasCamadas.slice(0, novaQuantidade);
+    });
+  };
+
+  {/*OnChanges*/}
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setForm((previousForm) => {
+
+    setAvaliacao((previousForm) => {
       return {
         ...previousForm,
         [name]: value,
@@ -34,25 +72,65 @@ export function AvaliationPage() {
     });
   };
 
-  const activate2 = async() => {
-      setIsSelected2(!isSelected2);
-      setIsSelected1(!isSelected1);
-  }
+  const onChangeAmostra = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    
+    setAmostra((previousForm) => {
+      return {
+        ...previousForm,
+        [name]: value,
+      };
+    });
+  };
 
-  const activate3 = async() => {
-      setIsSelected3(!isSelected3);
-      activate2();
-  }
+  {/*Handlres*/}
+  const handleCamadaChange = (event: ChangeEvent<HTMLInputElement>, index: number, field: keyof ICamada) => {
+    const { value } = event.target;
+    setCamadas((prevCamadas) => {
+      const novasCamadas = [...prevCamadas];
+      
+      (novasCamadas[index][field] as any) = (field === 'comprimentoCm' || field === 'notaCamada')
+        ? parseFloat(value) || 0
+        : value;
+      return novasCamadas;
+    });
+  };
 
-  const activate4 = async() => {
-      setIsSelected4(!isSelected4);
-      activate3();
-  }
+  const handleAvaliar = () => {
+    amostra.numeroCamadas = camadasSelecionadas.valueOf();
 
-  const activate5 = async() => {
-      setIsSelected5(!isSelected5);
-      activate4();
-  }
+    navigate("/avaliationConfirm", {
+      state: {
+        avaliacao,
+        amostra,
+        camadas,
+      },
+    });
+  };
+  
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Tipagem mais específica para File
+  const fileInputRef = useRef<HTMLInputElement>(null); // Crie uma referência para o input
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => { // Tipagem correta para ChangeEvent
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const handleUploadClick = () => { // Função para disparar o clique no input de arquivo
+    fileInputRef.current?.click();
+  };
+
+  const handleUpload = () => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      // Aqui você faria a requisição para o seu backend para enviar a imagem
+      console.log('Imagem selecionada para upload:', selectedFile.name);
+    } else {
+      alert('Por favor, selecione uma imagem primeiro!');
+    }
+  };
 
   return (
     <div>
@@ -63,8 +141,8 @@ export function AvaliationPage() {
             <div className="justify-content-center" style={{position: 'absolute', width: '80vw'}}>
               <div className="d-flex justify-content-center">
                 <h5 >  </h5>
-                <textarea className="p-2 text-name text-center" style={{background: 'white', borderRadius: '10px'}}
-                  placeholder="Amostra" maxLength={100} />
+                <input className="p-2 text-name text-center" style={{background: 'white', borderRadius: '10px'}}
+                  placeholder="Amostra" maxLength={100} name="nomeAmostra" value={amostra.nomeAmostra} onChange={onChangeAmostra} />
               </div>
             </div>
           </div>
@@ -93,27 +171,13 @@ export function AvaliationPage() {
 
           <div className="d-flex justify-content-center mt-2">
             <div className="d-flex justify-content-center col-12 col-md-8 mb-3">
-              
-              <button type="button" onClick={() => setIsSelected1(!isSelected1)}
-                className={`d-flex rounded-circle justify-content-center mx-2
-                  ${isSelected1 ? "selected-button-layers" : "button-layers"}`}> 1 </button>
-              
-            
-              <button type="button" onClick={() => activate2()}
-                className={`d-flex rounded-circle justify-content-center mx-2
-                  ${isSelected2 ? "selected-button-layers" : "button-layers"}`}> 2 </button>
-
-              <button type="button" onClick={() => activate3()}
-                className={`d-flex rounded-circle justify-content-center mx-2
-                  ${isSelected3 ? "selected-button-layers" : "button-layers"}`}> 3 </button>
-
-              <button type="button" onClick={() => activate4()}
-                className={`d-flex rounded-circle justify-content-center mx-2
-                  ${isSelected4 ? "selected-button-layers" : "button-layers"}`}> 4 </button>
-
-              <button type="button" onClick={() => activate5()}
-                className={`d-flex rounded-circle justify-content-center mx-2
-                  ${isSelected5 ? "selected-button-layers" : "button-layers"}`}> 5 </button>
+              {[1, 2, 3, 4, 5].map((num) => (
+                <button key={num} type="button" onClick={() => selecionarCamadas(num)}
+                  className={`d-flex rounded-circle justify-content-center mx-2
+                    ${camadasSelecionadas >= num ? "selected-button-layers" : "button-layers"}`}>
+                  {num}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -122,90 +186,52 @@ export function AvaliationPage() {
         <div className="justify-content-center">
           <div className="row mt-3">
             <h5> Local/propriedade (GPS): </h5>
-            <textarea id="gps" maxLength={100} className="text-fields" />
+            <input id="gps" maxLength={100} className="text-fields" name="localizacao" 
+              value={amostra.localizacao} onChange={onChangeAmostra} />
           </div>
 
           <div className="row mt-3">
             <h5> Avaliador: </h5>
-            <textarea id="avaliador" maxLength={100} className="text-fields" />
+            <input id="avaliador" maxLength={100} className="text-fields" name="avaliador" 
+              value={avaliacao.avaliador} onChange={onChange} />
           </div>
 
           {/*Campos que carregam com os botões*/}
-          {isSelected1 && (
-              <>
-                <div className="row mt-3">
-                  <h5> Comprimento camada 1: </h5>
-                  <textarea id="cc1" maxLength={100} className="text-fields" />
-                </div>
+          {camadas.slice(0, camadasSelecionadas).map((camada, index) => (
+            <div key={index}>
+              <div className="row mt-3">
+                <h5>Comprimento camada {index + 1}:</h5>
+                <input maxLength={100} className="text-fields"  name="comprimentoCm" value={camada.comprimentoCm} 
+                  onChange={(e) => handleCamadaChange(e, index, "comprimentoCm")} />
+              </div>
 
-                <div className="row mt-3">
-                  <h5> Nota camada 1: </h5>
-                  <textarea id="nc1" maxLength={100} className="text-fields" />
-                </div>
-              </>
-          )}
-
-          {isSelected2 && (
-              <>
-                <div className="row mt-3">
-                  <h5> Comprimento camada 2: </h5>
-                  <textarea id="cc2" maxLength={100} className="text-fields" />
-                </div>
-
-                <div className="row mt-3">
-                  <h5> Nota camada 2: </h5>
-                  <textarea id="nc2" maxLength={100} className="text-fields" />
-                </div>
-              </>
-          )}
-
-          {isSelected3 && (
-              <>
-                <div className="row mt-3">
-                  <h5> Comprimento camada 3: </h5>
-                  <textarea id="cc3" maxLength={100} className="text-fields" />
-                </div>
-
-                <div className="row mt-3">
-                  <h5> Nota camada 3: </h5>
-                  <textarea id="nc3" maxLength={100} className="text-fields" />
-                </div>
-              </>
-          )}
-
-          {isSelected4 && (
-              <>
-                <div className="row mt-3">
-                  <h5> Comprimento camada 4: </h5>
-                  <textarea id="cc1" maxLength={100} className="text-fields" />
-                </div>
-
-                <div className="row mt-3">
-                  <h5> Nota camada 4: </h5>
-                  <textarea maxLength={100} className="text-fields" />
-                </div>
-              </>
-          )}
-
-          {isSelected5 && (
-              <>
-                <div className="row mt-3">
-                  <h5> Comprimento camada 5: </h5>
-                  <textarea maxLength={100} className="text-fields" />
-                </div>
-
-                <div className="row mt-3">
-                  <h5> Nota camada 5: </h5>
-                  <textarea maxLength={100} className="text-fields" />
-                </div>
-              </>
-          )}
+              <div className="row mt-3">
+                <h5>Nota camada {index + 1}:</h5>
+                <input maxLength={100} className="text-fields" name="notaCamada" value={camada.notaCamada}
+                  onChange={(e) => handleCamadaChange(e, index, "notaCamada")} />
+              </div>
+            </div>
+          ))}
         </div>
 
         {/*Imagens*/}
-        <div className="d-flex justify-content-center mt-4 mb-4">
+        <div className={`d-flex justify-content-center mt-4
+            ${selectedFile !== null ? "uploaded" : "mb-4"}`}>
           <div className="rounded-circle" style={{backgroundColor: '#ba9c70', width: '50px', height: '50px'}}>
-            <FontAwesomeIcon icon={faCamera} size="2x" className="m-2" style={{color:'black'}} />
+            <input type="file" accept="image/*" onChange={handleFileChange} ref={fileInputRef} style={{ display: 'none' }} />
+
+            <div className="rounded-circle" style={{backgroundColor: '#ba9c70', width: '50px', height: 
+              '50px', cursor: 'pointer'}} onClick={handleUploadClick}>
+              <FontAwesomeIcon icon={faCamera} size="2x" className="m-2" style={{color:'black'}} />
+            </div>
+
+            {selectedFile && (
+              <div className="mt-3 text-center">
+                <img src={URL.createObjectURL(selectedFile)} alt="Pré-visualização da imagem"
+                  className="image-upload-card"
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -213,12 +239,13 @@ export function AvaliationPage() {
         <div className="d-flex justify-content-center mt-4 mb-4">
           <div className="row mt-3">
             <h5> Outras informações importantes: </h5>
-            <textarea className="text-infos" />
+            <input className="text-infos" name="outrasInformacoes" 
+              value={amostra.outrasInformacoes} onChange={onChange} />
           </div>
         </div>
 
         <div className="d-flex justify-content-center mt-5">
-          <Link to={"/avaliationConfirm"} className="button-aval"> AVALIAR </Link>
+          <button type="button" onClick={handleAvaliar} className="button-aval"> AVALIAR </button>
         </div>
       </form>
     </div>

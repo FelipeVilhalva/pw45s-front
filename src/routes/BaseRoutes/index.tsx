@@ -7,6 +7,8 @@ import { AvaliationConfirmPage } from "@/pages/AvaliationConfirmPage";
 import { WhereSamplePage } from "@/pages/WhereSamplePage";
 import { WhenSamplePage } from "@/pages/WhenSamplePage";
 import { SampleExtractionPage } from "@/pages/SampleExtractionPage";
+import { ConfigurationPage } from "@/pages/ConfigurationPage";
+import { TermsPages } from "@/pages/TermsPages";
 
 export function BaseRoutes() {
   return (
@@ -18,6 +20,9 @@ export function BaseRoutes() {
 
           <Route path="/avaliation" element={<AvaliationPage />} />
           <Route path="/avaliationConfirm" element={<AvaliationConfirmPage />} />
+
+          <Route path="/configuration" element={<ConfigurationPage />} />
+          <Route path="/terms" element={<TermsPages />} />
           
           <Route path="/equipments" element={<EquipmentsPage />} />
           <Route path="/where" element={<WhereSamplePage />} />
