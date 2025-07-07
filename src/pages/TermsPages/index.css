@@ -1,0 +1,20 @@
+.terms-board {
+    background-color: #ba9c70;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.button-deactivated {
+    display: flex;
+    width: 22rem;
+    height: 4rem;
+    background-color: #4b3b21;
+    font-weight: bold;
+    font-size: x-large;
+    color: rgb(107, 107, 107);
+    border-radius: 8px;
+    justify-self: center;
+    justify-content: center;
+    padding-top: 1rem;
+    margin-top: -1rem;
+}

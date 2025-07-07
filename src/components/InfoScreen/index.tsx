@@ -18,7 +18,7 @@ export const InfoScreen: React.FC<ScreenProps> = ({name, text, image, before, af
 
         {image != "" && (
           <>
-            <div>
+            <div className="justify-content-center align-itens-center">
               <img src={image} alt={name} className="mt-5" />
             </div>
 

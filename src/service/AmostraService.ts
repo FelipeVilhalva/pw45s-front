@@ -23,10 +23,20 @@ const remove = async (id: number): Promise<any> => {
   return response;
 };
 
-const save = async (avaliacao: IAmostra): Promise<any> => {
+const save = async (amostra: IAmostra): Promise<any> => {
   let response;
   try {
-    response = await api.post(AMOSTRA_URL, avaliacao);
+    response = await api.post(AMOSTRA_URL, amostra);
+  } catch (error: any) {
+    response = error.response;
+  }
+  return response;
+};
+
+const update = async (amostra: IAmostra, id: number): Promise<any> => {
+  let response;
+  try {
+    response = await api.put(`${AMOSTRA_URL}/${id}`, amostra);
   } catch (error: any) {
     response = error.response;
   }
@@ -43,11 +53,23 @@ const findById = async (id: number): Promise<any> => {
   return response;
 };
 
-const ProductService = {
+const findAllSamplesById = async (id: number): Promise<any> => {
+  let response;
+  try {
+    response = await api.get(`${AMOSTRA_URL}/por-avaliacao/${id}`);
+  } catch (error: any) {
+    response = error.response;
+  }
+  return response;
+};
+
+const AmostraService = {
   findAll,
   remove,
   save,
+  update,
   findById,
+  findAllSamplesById
 };
 
-export default ProductService;
+export default AmostraService;

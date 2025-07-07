@@ -1,24 +1,81 @@
 import "./index.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBolt, faCalendarDays, faComment, faGear, faInfo, faLightbulb, faMapLocationDot, faPersonDigging, faPiggyBank, faScrewdriverWrench, faSeedling, faShareNodes, faV } from '@fortawesome/free-solid-svg-icons'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AvaliacaoService from "@/service/AvaliacaoService";
-import { useState } from "react";
-import { IAvaliacao } from "@/commons/interfaces";
+import { useEffect, useState } from "react";
+import { IAvaliacao, IConfiguracao } from "@/commons/interfaces";
+import ConfiguracaoService from "@/service/ConfiguracaoService";
+
+interface IConfiguracaoComId extends IConfiguracao {
+  id: number;
+}
 
 export function HomePage() {
-  const [avaliacao] = useState<IAvaliacao>({configuracaoId: 1});
+  const [config, setConfig] = useState<IConfiguracaoComId | null>(null);
+  const [estaSalvando, setEstaSalvando] = useState(false);
+  const [idAvaliation, setIdAvaliation] = useState(0);
 
-  const criaAvaliacao = async() => {
-    const response = await AvaliacaoService.save(avaliacao);
-  }
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const findConfiguration = async () => {
+      try {
+        const response: IConfiguracao[] = await ConfiguracaoService.findAll();
+
+        if (response?.length > 0) {
+          const lastConfig = response.at(-1) as IConfiguracaoComId;
+          if (!lastConfig.id) {
+            lastConfig.id = response.length;
+          }
+          setConfig(lastConfig);
+        } else {
+          setConfig({ id: 1 } as IConfiguracaoComId);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar configurações:", error);
+        setConfig({ id: 1 } as IConfiguracaoComId);
+      }
+    };
+
+    findConfiguration();
+  }, []);
+
+  const criaAvaliacao = async () => {
+    if (!config) {
+      return;
+    }
+
+    setEstaSalvando(true);
+
+    try {
+      const novaAvaliacao: IAvaliacao = {
+        configuracaoId: config.id,
+      };
+
+      const response = await AvaliacaoService.save(novaAvaliacao);
+      console.log("Avaliação salva com sucesso!", response);
+
+      console.log(response.data.id);
+
+      navigate("/avaliation", {
+      state: {
+        idAvaliation: response.data.id 
+      },
+    });
+    } catch (error) {
+      console.error("Erro ao salvar avaliação:", error);
+    } finally {
+      setEstaSalvando(false);
+    }
+  };
 
   return (
     <div>
       <div className="container">
         <div>
           <div className="d-flex justify-content-center">
-            <Link to={"/avaliation"} className="button-aval" onClick={criaAvaliacao}> AVALIAR </Link>
+            <button type="button" onClick={criaAvaliacao} className="button-aval"> AVALIAR </button>
           </div>
 
           <div className="divisor mt-5"></div>
@@ -146,3 +203,4 @@ export function HomePage() {
     </div>
   );
 }
+

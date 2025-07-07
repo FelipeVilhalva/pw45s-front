@@ -14,7 +14,7 @@ export function SampleExtractionPage () {
                     Meça o comprimento (profundidade) da amostra. (É possível profundidades, retirar menores 
                     mas evite amostrar profundidades maiores que 25 cm, para isso utilize o SubVESS 
                     (Ball et al., 2015)."
-                    image="https://media.tenor.com/Md_7M6e7ovQAAAAe/gimli-i-am-a-dwarf.png"
+                    image="src/assets/swapslice.gif"
                     before="/when"
                     after="/" />
                 </div>

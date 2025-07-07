@@ -1,52 +1,53 @@
-import { IUserLogin, IUserSignup } from "@/commons/interfaces.ts";
+import { IConfiguracao } from "@/commons/interfaces";
 import { api } from "@/lib/axios";
 
-const signup = async (user: IUserSignup): Promise<any> => {
+const CONFIGURACAO_URL = "/configuracoes";
+
+const findAll = async (): Promise<any> => {
   let response;
   try {
-    response = await api.post("/users", user);
-  } catch (err: any) {
-    response = err.response;
+    response = await api.get(CONFIGURACAO_URL);
+  } catch (error: any) {
+    response = error.response;
   }
   return response;
 };
 
-const login = async (user: IUserLogin): Promise<any> => {
+const remove = async (id: number): Promise<any> => {
   let response;
   try {
-    response = await api.post("/login", user);
-
-    localStorage.setItem("token", JSON.stringify(response.data.token));
-    localStorage.setItem("user", JSON.stringify(response.data.user));
-
-    api.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
-
-  } catch (err: any) {
-    response = err.response;
+    response = await api.delete(`${CONFIGURACAO_URL}/${id}`);
+  } catch (error: any) {
+    response = error.response;
   }
   return response;
 };
 
-const isAuthenticated = (): boolean => {
-  const token = localStorage.getItem("token");
-
-  if (token)
-    api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(token)}`;
-
-  return token ? true : false;
-}
-
-const logout = (): void => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  api.defaults.headers.common["Authorization"] = '';
-}
-
-const AuthService = {
-  signup,
-  login,
-  isAuthenticated,
-  logout,
+const save = async (configuracao: IConfiguracao): Promise<any> => {
+  let response;
+  try {
+    response = await api.post(CONFIGURACAO_URL, configuracao);
+  } catch (error: any) {
+    response = error.response;
+  }
+  return response;
 };
 
-export default AuthService;
+const findById = async (id: number): Promise<any> => {
+  let response;
+  try {
+    response = await api.get(`${CONFIGURACAO_URL}/${id}`);
+  } catch (error: any) {
+    response = error.response;
+  }
+  return response;
+};
+
+const ConfiguracaoService = {
+  findAll,
+  remove,
+  save,
+  findById,
+};
+
+export default ConfiguracaoService;

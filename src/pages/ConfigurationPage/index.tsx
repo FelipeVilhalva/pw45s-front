@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
 import { IConfiguracao } from "@/commons/interfaces";
 import { ChangeEvent, useState } from "react";
 
 export function ConfigurationPage() {
+  const navigate = useNavigate();
+
   const [configuracao, setConfiguracao] = useState<IConfiguracao>({
     nome: "",
     email: "",
@@ -25,11 +27,15 @@ export function ConfigurationPage() {
     });
   };
 
+  const handleContinue = () => {
+    navigate("/terms", { state: { configuracao } });
+  };
+
   return (
     <div>
       <div className="container">
         {/*Campos*/}
-        <div className="justify-content-center">
+        <div className="justify-content-center p-2">
           <div className="row mt-3">
             <h5> Nome: </h5>
             <input maxLength={100} className="text-fields" name="nome" 
@@ -61,7 +67,9 @@ export function ConfigurationPage() {
           </div>
 
           <div className="d-flex justify-content-center mt-5">
-              <Link to={"/terms"} className="button-aval"> Termos e condições de uso </Link>
+            <button onClick={handleContinue} className="button-confirguration">
+              Termos e condições de uso
+            </button>
           </div>
         </div>
       </div>

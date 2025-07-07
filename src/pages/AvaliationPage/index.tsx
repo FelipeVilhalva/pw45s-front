@@ -1,17 +1,22 @@
 import "./index.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCamera, faQuestion } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
-import { ChangeEvent, SetStateAction, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import { IAmostra, IAvaliacao, ICamada } from "@/commons/interfaces";
+import AmostraService from "@/service/AmostraService";
 
 export function AvaliationPage() {
   const [camadasSelecionadas, setCamadasSelecionadas] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [idSample, setIdSample] = useState(0);
+
+  const { idAvaliation } = location.state || {};
 
   {/*Formulários*/}
   const [avaliacao, setAvaliacao] = useState<IAvaliacao>({
-    configuracaoId: 1,
+    configuracaoId: 0,
     nome: "Amostra",
     avaliador: "",
     informacoes: "",
@@ -25,7 +30,7 @@ export function AvaliationPage() {
   });
 
   const [amostra, setAmostra] = useState<IAmostra>({
-    avaliacaoId: 0,
+    avaliacaoId: idAvaliation,
     nomeAmostra: "",
     numeroCamadas: 0,
     localizacao: "",
@@ -40,6 +45,15 @@ export function AvaliationPage() {
   const [camadas, setCamadas] = useState<ICamada[]>([
     { amostraId: 0, numeroCamada: 1, comprimentoCm: 0, notaCamada: 0 },
   ]);
+
+  useEffect(() => {
+    if (idAvaliation) {
+      setAmostra((prevAmostra) => ({
+        ...prevAmostra,
+        avaliacaoId: idAvaliation,
+      }));
+    }
+  }, [idAvaliation]);
 
   {/*Função para selecionar nos botões do Vess*/}
   const selecionarCamadas = (quantidade: number) => {
@@ -83,7 +97,7 @@ export function AvaliationPage() {
     });
   };
 
-  {/*Handlres*/}
+  {/*Handlers*/}
   const handleCamadaChange = (event: ChangeEvent<HTMLInputElement>, index: number, field: keyof ICamada) => {
     const { value } = event.target;
     setCamadas((prevCamadas) => {
@@ -96,28 +110,34 @@ export function AvaliationPage() {
     });
   };
 
-  const handleAvaliar = () => {
+  const handleAvaliar = async () => {
     amostra.numeroCamadas = camadasSelecionadas.valueOf();
 
-    navigate("/avaliationConfirm", {
-      state: {
-        avaliacao,
-        amostra,
-        camadas,
-      },
-    });
+    console.log(idAvaliation);
+    const newSampleId = await criaAmostra();
+
+    if (newSampleId) {
+      navigate("/avaliationConfirm", {
+        state: {
+          avaliacao,
+          amostra,
+          camadas,
+          idSample: newSampleId,
+        },
+      });
+    }
   };
   
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Tipagem mais específica para File
-  const fileInputRef = useRef<HTMLInputElement>(null); // Crie uma referência para o input
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => { // Tipagem correta para ChangeEvent
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
     }
   };
 
-  const handleUploadClick = () => { // Função para disparar o clique no input de arquivo
+  const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
 
@@ -125,10 +145,22 @@ export function AvaliationPage() {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('image', selectedFile);
-      // Aqui você faria a requisição para o seu backend para enviar a imagem
       console.log('Imagem selecionada para upload:', selectedFile.name);
     } else {
       alert('Por favor, selecione uma imagem primeiro!');
+    }
+  };
+
+  const criaAmostra = async () => {
+    try {
+      const response = await AmostraService.save(amostra);
+      const newId = response.data.id;
+      setIdSample(newId);
+      console.log("Amostra salva com sucesso!", response);
+      return newId;
+    } catch (error) {
+      console.error("Erro ao salvar avaliação:", error);
+      return null;
     }
   };
 
@@ -140,7 +172,6 @@ export function AvaliationPage() {
           <div className="justify-content-center col-9 col-md-9">
             <div className="justify-content-center" style={{position: 'absolute', width: '80vw'}}>
               <div className="d-flex justify-content-center">
-                <h5 >  </h5>
                 <input className="p-2 text-name text-center" style={{background: 'white', borderRadius: '10px'}}
                   placeholder="Amostra" maxLength={100} name="nomeAmostra" value={amostra.nomeAmostra} onChange={onChangeAmostra} />
               </div>
@@ -239,8 +270,8 @@ export function AvaliationPage() {
         <div className="d-flex justify-content-center mt-4 mb-4">
           <div className="row mt-3">
             <h5> Outras informações importantes: </h5>
-            <input className="text-infos" name="outrasInformacoes" 
-              value={amostra.outrasInformacoes} onChange={onChange} />
+            <input className="text-infos" name="outrasInformacoes"
+              value={amostra.outrasInformacoes} onChange={onChangeAmostra} />
           </div>
         </div>
 

@@ -33,6 +33,16 @@ const save = async (avaliacao: IAvaliacao): Promise<any> => {
   return response;
 };
 
+const update = async (avaliacao: IAvaliacao, id: number): Promise<any> => {
+  let response;
+  try {
+    response = await api.put(`${AVALIACAO_URL}/${id}`, avaliacao);
+  } catch (error: any) {
+    response = error.response;
+  }
+  return response;
+};
+
 const findById = async (id: number): Promise<any> => {
   let response;
   try {
@@ -43,11 +53,12 @@ const findById = async (id: number): Promise<any> => {
   return response;
 };
 
-const ProductService = {
+const AvaliacaoService = {
   findAll,
   remove,
   save,
+  update,
   findById,
 };
 
-export default ProductService;
+export default AvaliacaoService;

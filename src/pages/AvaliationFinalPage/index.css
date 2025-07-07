@@ -1,0 +1,44 @@
+.good-aval {
+    background-color: #bdeab2;
+    border-radius: 10px;
+    font-weight: bold;
+    width: 10rem;
+    height: 3.5rem;
+    text-align: center;
+    font-size: xx-large;
+}
+
+.mid-aval {
+    background-color: #ffaf55;
+    border-radius: 10px;
+    font-weight: bold;
+    width: 10rem;
+    height: 3.5rem;
+    text-align: center;
+    font-size: xx-large;
+}
+
+.bad-aval {
+    background-color: #e38162;
+    border-radius: 10px;
+    font-weight: bold;
+    width: 10rem;
+    height: 3.5rem;
+    text-align: center;
+    font-size: xx-large;
+}
+
+.button-score {
+    display: flex;
+    width: 20vh;
+    height: 4rem;
+    background-color: #886c3f;
+    font-weight: bold;
+    font-size: large;
+    color: white;
+    border-radius: 8px;
+    justify-self: center;
+    justify-content: center;
+    padding-top: 1rem;
+    margin-top: -1rem;
+}

@@ -9,6 +9,7 @@ import { WhenSamplePage } from "@/pages/WhenSamplePage";
 import { SampleExtractionPage } from "@/pages/SampleExtractionPage";
 import { ConfigurationPage } from "@/pages/ConfigurationPage";
 import { TermsPages } from "@/pages/TermsPages";
+import { AvaliationFinalPage } from "@/pages/AvaliationFinalPage";
 
 export function BaseRoutes() {
   return (
@@ -20,6 +21,7 @@ export function BaseRoutes() {
 
           <Route path="/avaliation" element={<AvaliationPage />} />
           <Route path="/avaliationConfirm" element={<AvaliationConfirmPage />} />
+          <Route path="/avaliationFinal" element={<AvaliationFinalPage />} />
 
           <Route path="/configuration" element={<ConfigurationPage />} />
           <Route path="/terms" element={<TermsPages />} />
