@@ -6,12 +6,6 @@ import AuthService from "@/service/ConfiguracaoService";
 export function NavBar() {
   const navigate = useNavigate();
 
-  const onClickLogout = () => {
-    AuthService.logout();
-    // window.location.href = "/login";
-    navigate("/login");
-  };
-
   return (
     <div className="background shadow-sm" style={{backgroundColor: "#ba9c70"}}>
       <div className="container">

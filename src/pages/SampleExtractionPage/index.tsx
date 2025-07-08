@@ -16,7 +16,7 @@ export function SampleExtractionPage () {
                     (Ball et al., 2015)."
                     image="src/assets/swapslice.gif"
                     before="/when"
-                    after="/" />
+                    after="/fragmentation" />
                 </div>
             </div>
         </div>

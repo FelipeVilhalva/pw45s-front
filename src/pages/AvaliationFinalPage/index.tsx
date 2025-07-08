@@ -12,8 +12,7 @@ interface IAvaliacaoComId extends IAvaliacao {
 export function AvaliationFinalPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { avaliacao, amostra, camadas } = location.state || {};
-  const [idAvaliation, setIdAvaliation] = useState(0);
+  const { avaliacao, amostra, camadas, idAvaliation, idConfig} = location.state || {};
   const [amostras, setAmostras] = useState([]);
 
   const [vessColorClass, setVessColorClass] = useState("p-2 text-center good-aval");
@@ -37,38 +36,47 @@ export function AvaliationFinalPage() {
   const findAllSamples = async () => {
     //Setta o id da avaliação para poder pesquisar corretamente
     avaliacaoAux.id = idAvaliation;
+    console.log("Id avaliacao: " + avaliacaoAux.id);
+
+    console.log("Teste:" +avaliacaoAux.nome);
 
     const response = await AmostraService.findAllSamplesById(idAvaliation);
     console.log("Amostra atualizada com sucesso!", response);
 
-    setAmostras(response);
-    console.log("Amostras:", response);
+    setAmostras(response.data);
+    console.log("Amostras:", response.data);
   }
 
   useEffect(() => {
     findAllSamples();
+  }, []);
 
+  useEffect(() => {
     if (amostras && amostras.length > 0) {
       let somaQeVess = 0;
-      let somaCamadas = 0;
+      let somaAmostras = 0;
 
       amostras.forEach((amostra: IAmostra) => {
+        
         if (amostra.escoreQeVess !== undefined && amostra.escoreQeVess !== null) {
           somaQeVess += amostra.escoreQeVess;
-          somaCamadas++;
+          somaAmostras++;
         }
       });
 
       let escoreFinal = 0;
-      if (somaCamadas > 0) {
-        escoreFinal = parseFloat((somaQeVess / somaCamadas).toFixed(2));
+      if (somaAmostras > 0) {
+        escoreFinal = parseFloat((somaQeVess / somaAmostras).toFixed(2));
       }
       
       setEscoreVessCalculado(escoreFinal);
+      console.log(escoreFinal);
 
       setAvaliacaoAux(prevState => ({
         ...prevState,
-        escoreQeVess: escoreFinal
+        escoreMedioGeral: escoreFinal,
+        totalAmostras: somaAmostras,
+        dataFim: new Date(),
       }));
 
       if (escoreFinal >= 1 && escoreFinal <= 2.9) {
@@ -79,7 +87,7 @@ export function AvaliationFinalPage() {
         setVessColorClass("p-2 text-center bad-aval");
       }
     }
-  }, []);
+  }, [amostras]);
 
   const onChangeAvaliacao = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -94,6 +102,7 @@ export function AvaliationFinalPage() {
     //Setta o id da amostra para poder atualizar corretamente
     setAvaliacaoAux(avaliacao)
     avaliacaoAux.id = idAvaliation;
+    avaliacaoAux.configuracaoId = idConfig;
 
     const response = await AvaliacaoService.update(avaliacaoAux, idAvaliation);
     console.log("Avaliação atualizada com sucesso!", response);
@@ -105,7 +114,13 @@ export function AvaliationFinalPage() {
         {/* Cabeçalho */}
         <div className="d-flex justify-content-center">
           <div className="justify-content-center">
-            <h1 className={vessColorClass}> {escoreVessCalculado} </h1>
+            <div className="justify-content-center">
+              <h5> Escore Qe-VESS médio do local: </h5>
+            </div>
+
+            <div className="d-flex justify-content-center">
+              <h1 className={vessColorClass}> {escoreVessCalculado} </h1>
+            </div>
           </div>
         </div>
 

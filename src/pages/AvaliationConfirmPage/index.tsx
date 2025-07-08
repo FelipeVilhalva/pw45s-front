@@ -11,7 +11,7 @@ interface IAmostraComId extends IAmostra {
 export function AvaliationConfirmPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { avaliacao, amostra, camadas, idSample } = location.state || {};
+  const { avaliacao, amostra, camadas, idSample, idConfig } = location.state || {};
   const [idAvaliation, setIdAvaliation] = useState(0);
 
   const [vessColorClass, setVessColorClass] = useState("p-2 text-center good-aval");
@@ -85,7 +85,9 @@ export function AvaliationConfirmPage() {
 
     navigate("/avaliation", {
       state: {
-        idAvaliation: amostra.idAvaliation
+        idAvaliation: amostraAux.avaliacaoId,
+        avaliacao: avaliacao,
+        idConfig
       },
     });
   };
@@ -95,7 +97,9 @@ export function AvaliationConfirmPage() {
 
     navigate("/avaliationFinal", {
       state: {
-        idAvaliation: amostra.idAvaliation
+        idAvaliation: amostraAux.avaliacaoId,
+        avaliacao,
+        idConfig
       },
     });
   };
@@ -106,7 +110,13 @@ export function AvaliationConfirmPage() {
         {/* Cabeçalho */}
         <div className="d-flex justify-content-center">
           <div className="justify-content-center">
-            <h1 className={vessColorClass}> {escoreVessCalculado} </h1>
+            <div className="justify-content-center">
+              <h5> Escore Qe-VESS da amostra: </h5>
+            </div>
+
+            <div className="d-flex justify-content-center">
+              <h1 className={vessColorClass}> {escoreVessCalculado} </h1>
+            </div>
           </div>
         </div>
 

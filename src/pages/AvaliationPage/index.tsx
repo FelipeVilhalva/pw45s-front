@@ -12,10 +12,10 @@ export function AvaliationPage() {
   const location = useLocation();
   const [idSample, setIdSample] = useState(0);
 
-  const { idAvaliation } = location.state || {};
+  const { idAvaliation, avaliacao } = location.state || {};
 
   {/*Formulários*/}
-  const [avaliacao, setAvaliacao] = useState<IAvaliacao>({
+  const [avaliacaoAux, setAvaliacao] = useState<IAvaliacao>(avaliacao || {
     configuracaoId: 0,
     nome: "Amostra",
     avaliador: "",
@@ -119,10 +119,11 @@ export function AvaliationPage() {
     if (newSampleId) {
       navigate("/avaliationConfirm", {
         state: {
-          avaliacao,
+          avaliacaoAux,
           amostra,
           camadas,
           idSample: newSampleId,
+          idConfig: avaliacaoAux.configuracaoId
         },
       });
     }
@@ -181,10 +182,10 @@ export function AvaliationPage() {
           <div className="justify-content-center col-4 col-md-2" style={{position: 'relative'}}>
             <div className="justify-content-end col-12 col-md-12">
               <div className="d-flex justify-content-center">
-                <div className="d-flex rounded-circle justify-content-center"
+                <Link to="/score" className="d-flex rounded-circle justify-content-center"
                   style={{backgroundColor: '#ba9c70', width: '3.3rem', height: '3.3rem', border: '1px solid #873a00'}}>
                   <FontAwesomeIcon icon={faQuestion} size="2x" className="m-2" style={{color:'red'}} />
-                </div>
+                </Link>
               </div>
               
               <div className="d-flex justify-content-center">
@@ -224,7 +225,7 @@ export function AvaliationPage() {
           <div className="row mt-3">
             <h5> Avaliador: </h5>
             <input id="avaliador" maxLength={100} className="text-fields" name="avaliador" 
-              value={avaliacao.avaliador} onChange={onChange} />
+              value={avaliacaoAux.avaliador} onChange={onChange} />
           </div>
 
           {/*Campos que carregam com os botões*/}

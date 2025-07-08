@@ -1,0 +1,7 @@
+.divisor-score {
+    width: 100%;
+    height: 1px;
+    border: 1px solid #904900;
+    border-style: dashed;
+    justify-self: center;
+}

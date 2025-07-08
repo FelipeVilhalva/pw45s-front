@@ -60,7 +60,8 @@ export function HomePage() {
 
       navigate("/avaliation", {
       state: {
-        idAvaliation: response.data.id 
+        idAvaliation: response.data.id,
+        avaliacao: response.data
       },
     });
     } catch (error) {
@@ -117,19 +118,19 @@ export function HomePage() {
 
             <div className="row">
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to={"/fragmentation"} className="card-buttons">
                   <FontAwesomeIcon icon={faBolt} size="4x" className="m-3" style={{color:'black'}} />
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> Fragmentação de amostra </p>
-                </div>
+                </Link>
               </div>
 
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to={"/score"} className="card-buttons">
                   <div className="d-flex rounded-circle justify-content-center m-2" style={{backgroundColor: '#876c41', width: '5rem', height: '5rem'}}>
                     <FontAwesomeIcon icon={faV} size="3x" className="m-3" style={{color:'#e2daae'}} />
                   </div>
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> Escore VESS </p>
-                </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -141,33 +142,33 @@ export function HomePage() {
 
             <div className="row">
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to={"/management"} className="card-buttons">
                   <FontAwesomeIcon icon={faPiggyBank} size="4x" className="m-3" style={{color:'black'}} />
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> Decisão de manejo </p>
-                </div>
+                </Link>
               </div>
 
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to={"/info"} className="card-buttons">
                   <FontAwesomeIcon icon={faLightbulb} size="4x" className="m-3" style={{color:'black'}} />
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> Informações complementares </p>
-                </div>
+                </Link>
               </div>
             </div>
 
             <div className="row">
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to={"/whatis"} className="card-buttons">
                   <FontAwesomeIcon icon={faComment} size="4x" className="m-3" style={{color:'black'}} />
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> O que é VESS </p>
-                </div>
+                </Link>
               </div>
 
               <div className="d-flex justify-content-center col-12 col-md-6 mb-3">
-                <div className="card-buttons">
+                <Link to={"/history"} className="card-buttons">
                   <FontAwesomeIcon icon={faCalendarDays} size="4x" className="m-3" style={{color:'black'}} />
                   <p className="m-3 mt-3 fs-5" style={{color:'black'}}> Minhas avaliações </p>
-                </div>
+                </Link>
               </div>
             </div>
 

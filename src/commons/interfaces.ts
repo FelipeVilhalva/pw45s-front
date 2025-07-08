@@ -49,3 +49,9 @@ export interface ICamada{
     comprimentoCm: number;
     notaCamada: number;
 }
+
+export interface CarrosselProps {
+  name: string;
+  text: string;
+  image: string;
+}
